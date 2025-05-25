@@ -1,0 +1,32 @@
+[
+{
+    "model": "web.item",
+    "pk": 1,
+    "fields": {
+        "name": "Koníček",
+        "part_no": "K123 D999",
+        "desc": "Příliš žluťoučký kůň úpěl ďábelské ódy.",
+        "search_vector": "'koníček':1A 'kůň':4B 'příliš':2B 'óda':7B 'úpět':5B 'ďábelský':6B 'žluťoučký':3B"
+    }
+},
+{
+    "model": "web.item",
+    "pk": 2,
+    "fields": {
+        "name": "Hudba",
+        "part_no": "H987 Q123",
+        "desc": "Nechť již hříšné saxofony ďáblů rozezvučí síň úděsnými tóny waltzu, tanga a quickstepu.",
+        "search_vector": "'chtě':2B 'hudba':1A 'hříšný':4B 'nechť':2B 'quickstepu':14B 'rozezvučet':7B 'saxofon':5B 'síň':8B 'tango':12B 'tón':10B 'waltz':11B 'úděsný':9B 'ďáblů':6B"
+    }
+},
+{
+    "model": "web.item",
+    "pk": 3,
+    "fields": {
+        "name": "Student",
+        "part_no": "S444 U666",
+        "desc": "Zvlášť zákeřný učeň s ďolíčky běží podél zóny úlů.",
+        "search_vector": "'běžet':7B 'podél':8B 'student':1A 'učeň':4B 'zvlášť':2B 'zákeřný':3B 'zóna':9B 'úl':10B 'ďolíček':6B"
+    }
+}
+]

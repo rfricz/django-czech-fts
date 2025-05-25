@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="cs">
+  <head>
+    <title>FTS</title>
+  </head>
+  <body>
+    <div>
+      <form action="{% url 'item_search_results' %}" method="get" role="search">
+        <input type="search" name="q" placeholder="Vyhledat" autocomplete="off" autocorrect="off"
+          autocapitalize="none" enterkeyhint="go" spellcheck="false" maxlength="64"
+          value="{{ request.GET.q }}"
+        >
+      </form>
+    </div>
+    <hr>
+    <div>
+      <table border="1" cellspacing="0" border-collapse="collapse">
+        {% for item in items %}
+          <tr>
+            <th>{{ item.id }}</th>
+            <td>{{ item.name }}</td>
+            <td>{{ item.part_no }}</td>
+            <td>{{ item.desc }}</td>
+          <tr>
+        {% endfor %}
+      </table>
+    </div>
+  </body>
+</html>

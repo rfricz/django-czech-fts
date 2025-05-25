@@ -1,0 +1,76 @@
+services:
+  caddy:
+    # Graceful reload: `docker compose exec -w /etc/caddy caddy caddy reload .`
+    image: caddy:2-alpine
+    restart: on-failure:5
+    cap_add:
+      - NET_ADMIN
+    environment:
+      TZ: Europe/Prague
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - unix_sockets:/run
+      - django_static:/srv/static:ro
+      - django_media:/srv/media:ro
+      - caddy_certs:/data
+      - caddy_runtime:/config
+      - ./docker/localhost/caddy:/etc/caddy:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+        restart: true
+  backend:
+    restart: on-failure:5
+    init: true
+    build:
+      context: .
+    environment:
+      TZ: Europe/Prague
+      DJANGO_SETTINGS_MODULE: fts.settings_docker
+    volumes:
+      - unix_sockets:/run
+      - postgres_sockets:/var/run/postgresql
+      - django_static:/app/collected_static
+      - django_media:/app/media
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --connect-timeout 3 -H 'Accept: application/json' -H 'Host: fts.localhost' --unix-socket /run/gunicorn.sock ./healthz/"]
+      interval: 1m
+      retries: 5
+      start_period: 2m
+      start_interval: 3s
+      timeout: 5s
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+  db:
+    build:
+      context: ./docker/postgres
+    restart: on-failure:5
+    shm_size: 256mb
+    environment:
+      TZ: Europe/Prague
+      POSTGRES_PASSWORD: fts
+      POSTGRES_USER: fts
+      POSTGRES_INITDB_ARGS: "--lc-messages=en_US"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fts -d fts"]
+      interval: 3m
+      retries: 5
+      start_period: 1m
+      start_interval: 3s
+      timeout: 5s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_sockets:/var/run/postgresql
+volumes:
+  unix_sockets:
+  postgres_data:
+  postgres_sockets:
+  django_static:
+  django_media:
+  caddy_certs:
+  caddy_runtime:

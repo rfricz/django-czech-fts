@@ -1,0 +1,12 @@
+.git
+.vscode
+*.cache
+*.log
+*.sqlite3
+*.sublime-*
+__pycache__
+node_modules
+/docker
+!/docker/postgres
+!/docker/wsgi-entrypoint.sh
+/media

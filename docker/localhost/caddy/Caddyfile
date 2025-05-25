@@ -1,0 +1,28 @@
+fts.localhost {
+    tls internal
+    encode zstd gzip
+
+    handle_path /static/* {
+        file_server {
+            root /srv/static/
+        }
+        log_skip
+    }
+
+    handle_path /media/* {
+        file_server {
+            root /srv/media/
+        }
+        log_skip
+    }
+
+    reverse_proxy unix//run/gunicorn.sock {
+        health_uri http://fts.localhost/healthz/
+        health_interval 30s
+        health_status 2xx
+        health_headers {
+            Accept application/json
+            Host fts.localhost
+        }
+    }
+}
