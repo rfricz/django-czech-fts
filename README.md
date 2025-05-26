@@ -1,14 +1,20 @@
 # django-czech-fts
 
-Working example of full-text search and trigram similarity search in Czech language using PostgreSQL database and Django.
+A working example of full-text search and trigram similarity search in Czech language using PostgreSQL database and Django.
+
+---
+
+Fulltextové a přibližné vyhledávání v češtině v PostgreSQL databázi s použitím Django.
+
+---
 
 A simplified deployment config with Caddy and Debian-based Python and Postgres images is provided. Use Docker Compose to start everything up:
 ```bash
 docker compose up -d
 ```
-And then go to https://fts.localhost/ in your browser. The DB is prepopulated with a few pangrams in Czech and 500 rows of random lorem ipsum. Use the search field or the search URL like https://fts.localhost/search?q=k%C5%AF%C5%88.
+And then go to https://fts.localhost/ in your browser. The DB is prepopulated with a few pangrams in Czech and 500 rows of random lorem ipsum. Use the search field or the search URL like [https://fts.localhost/search?q=kůň](https://fts.localhost/search?q=k%C5%AF%C5%88).
 
-By leveraging the specialized indexes included in the model, the search query plan can avoid costly sequential scans in the DB most of the time, depending on the data and the searched text. Use the SQL explain function of the included django-debug-toolbar, e.g. searching for 'kůň' results in Bitmap Index Scan:
+By leveraging the specialized GIN indexes included in the model, the search query plan can avoid costly sequential scans in the DB most of the time, depending on the data and the searched text. Use the SQL explain function of the included django-debug-toolbar, e.g. searching for 'kůň' results in Bitmap Index Scan:
 ```
 Sort  (cost=95.36..95.36 rows=1 width=566) (actual time=0.122..0.123 rows=1 loops=1)
   Sort Key: (GREATEST(strict_word_similarity('kůň'::text, f_unaccent((name)::text)), word_similarity('kůň'::text, (part_no)::text))) DESC
