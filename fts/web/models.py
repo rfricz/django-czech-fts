@@ -5,6 +5,14 @@ from django.contrib.postgres.lookups import Unaccent
 
 
 class ImmutableUnaccent(Unaccent):
+    """
+    Unaccent that calls an immutable wrapper function (defined in init-user-db.sh)
+    for postgres' unaccent function, which is not immutable - a different locale
+    would return different results.
+
+    The DB's locale is set in postgres/Dockerfile and this wrapper is safe to use
+    if the locale won't ever change.
+    """
     lookup_name = "f_unaccent"
     function = "f_unaccent"
 models.CharField.register_lookup(ImmutableUnaccent)

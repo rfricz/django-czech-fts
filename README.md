@@ -1,4 +1,4 @@
-# django-czech-fts
+# Django PostgreSQL Full-text & Similarity Search in Czech (v češtině)
 
 A working example of full-text search and trigram similarity search in Czech language using PostgreSQL database and Django.
 
