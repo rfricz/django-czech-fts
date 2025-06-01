@@ -55,7 +55,6 @@ services:
       TZ: Europe/Prague
       POSTGRES_PASSWORD: fts
       POSTGRES_USER: fts
-      POSTGRES_INITDB_ARGS: "--lc-messages=en_US"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U fts -d fts"]
       interval: 3m

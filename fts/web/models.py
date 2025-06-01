@@ -12,6 +12,9 @@ class ImmutableUnaccent(Unaccent):
 
     The DB's locale is set in postgres/Dockerfile and this wrapper is safe to use
     if the locale won't ever change.
+
+    Without this, Django's makemigrations command succeeds but migrate
+    fails, so ImmutableUnaccent is necessary.
     """
     lookup_name = "f_unaccent"
     function = "f_unaccent"

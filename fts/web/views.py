@@ -20,7 +20,8 @@ class ItemList(ListView):
 class ItemSearchResults(ItemList):
     def get_queryset(self):
         qs = self.request.GET.get("q", "").strip()
-        query = SearchQuery(qs, search_type="websearch", config="cs")
+        # No need to specify config="cs" - it's the default
+        query = SearchQuery(qs, search_type="websearch")
         # Combine full-text search with similarity
         return (
             Item.objects

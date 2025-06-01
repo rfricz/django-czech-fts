@@ -16,8 +16,6 @@ RUN pipenv sync --system
 
 COPY ./fts/ ./fts
 COPY ./static/ ./static
-COPY --chmod=755 ./manage.py ./gunicorn.conf.py ./
-
-COPY --chmod=755 ./docker/wsgi-entrypoint.sh ./
+COPY --chmod=755 ./manage.py ./gunicorn.conf.py ./docker/wsgi-entrypoint.sh ./
 
 ENTRYPOINT [ "./wsgi-entrypoint.sh" ]
